@@ -1,0 +1,31 @@
+name: Diagnostic route check (manual, no data writes)
+
+on:
+  workflow_dispatch:
+    inputs:
+      origin:
+        description: "出発地IATAコード"
+        required: true
+        default: "HND"
+      destinations:
+        description: "到着地IATAコード（カンマ区切り）"
+        required: true
+        default: "MXP,CAI,DEL,HEL,PVG,DAD"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run diagnostic (結果はログ表示のみ、コミットしない)
+        env:
+          TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+        run: python diagnostic_test.py --origin "${{ inputs.origin }}" --destinations "${{ inputs.destinations }}"
