@@ -6,20 +6,20 @@ routes:
     destination: MXP
     label: "中部 → ミラノ"
   - origin: NGO
-    destination: CAI
-    label: "中部 → カイロ"
-  - origin: NGO
-    destination: DEL
-    label: "中部 → デリー"
-  - origin: NGO
-    destination: HEL
-    label: "中部 → ヘルシンキ"
-  - origin: NGO
     destination: PVG
     label: "中部 → 上海(浦東)"
   - origin: NGO
-    destination: DAD
-    label: "中部 → ダナン"
+    destination: BKK
+    label: "中部 → バンコク"
+  - origin: NGO
+    destination: ICN
+    label: "中部 → ソウル(仁川)"
+  - origin: NGO
+    destination: TPE
+    label: "中部 → 台北(桃園)"
+  - origin: NGO
+    destination: HKG
+    label: "中部 → 香港"
 
 settings:
   # Travelpayouts APIへのリクエスト通貨（対応通貨のみ）。取得後にJPY換算して保存する。
