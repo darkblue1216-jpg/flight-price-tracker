@@ -33,8 +33,8 @@ Aviasales実検索キャッシュに基づく集計値であり、**リアルタ
 [frankfurter.app](https://www.frankfurter.app/) のUSD/JPYレートで換算したもの。
 Travelpayouts API自体がjpyを直接サポートしない前提での設計。
 
-`num_stops` は `/v1/prices/calendar` のレスポンスに乗数（`transfers`）が含まれる場合のみ埋まる。
-通常のcalendarレスポンスには含まれないことが多く、その場合は空欄になる。
+`num_stops` は `/v1/prices/calendar` のレスポンスの `transfers` フィールドから取得（実データで確認済み、
+0=直行, 1以上=経由）。フィールド自体が無い場合のみ空欄になる。
 
 ## セットアップ
 1. Travelpayoutsでトークンを取得
@@ -50,7 +50,7 @@ python fetch_prices.py
 streamlit run app.py
 ```
 
-## 未検証の注意点
-このツールはTravelpayouts APIの有効なトークンでは未検証（このセッションではトークンを保有していない）。
-公開ドキュメント通りのレスポンス形式を前提にしているが、初回実行時にAPIレスポンス構造が
-想定と異なる場合は `fetch_prices.py` の `fetch_calendar_month` / パース部分を調整すること。
+## 動作実績
+2026-09-10に実トークンでGitHub Actions初回実行済み。3路線×181日=543行を正常取得
+（価格が付いた行の割合は路線により14〜30%程度。calendar APIのキャッシュ実績に依存するため、
+残り日数が遠い日付ほど欠測が多くなる傾向がある）。airline・num_stopsとも実データで取得確認済み。
