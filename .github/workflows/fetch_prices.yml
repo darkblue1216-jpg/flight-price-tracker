@@ -1,0 +1,39 @@
+name: Fetch daily flight prices
+
+on:
+  schedule:
+    # 06:00 JST = 21:00 UTC（前日）: 毎日1回、全路線をまとめて取得
+    - cron: "0 21 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Fetch today's flight prices
+        env:
+          TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+        run: python fetch_prices.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "変更なし（データ未更新）"
+          else
+            git commit -m "data: $(date -u +%Y-%m-%d) 航空券価格スナップショットを更新"
+            git push
+          fi

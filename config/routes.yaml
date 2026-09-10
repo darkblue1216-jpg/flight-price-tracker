@@ -1,0 +1,21 @@
+# 追跡する路線を手動で追記する設定ファイル。
+# origin / destination は IATA空港コード（3レター、都市コードでも可）。
+# label は表示用の任意ラベル。
+routes:
+  - origin: NRT
+    destination: HNL
+    label: "成田 → ホノルル"
+  - origin: HND
+    destination: CTS
+    label: "羽田 → 新千歳"
+  - origin: KIX
+    destination: ICN
+    label: "関西 → ソウル(仁川)"
+
+settings:
+  # Travelpayouts APIへのリクエスト通貨（対応通貨のみ）。取得後にJPY換算して保存する。
+  currency: usd
+  # 出発日の何日前から観測するか（半年=180日）
+  lookahead_days: 180
+  # /v1/prices/calendar を何ヶ月先まで呼ぶか（lookahead_daysを覆うのに十分な月数+バッファ）
+  max_months_ahead: 7
